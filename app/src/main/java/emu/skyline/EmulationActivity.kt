@@ -418,19 +418,11 @@ class EmulationActivity : AppCompatActivity(), SurfaceHolder.Callback, View.OnTo
             }
         }
 
-        if (emulationSettings.perfStats) {
-            if (emulationSettings.disableFrameThrottling)
-                binding.perfStats.setTextColor(getColor(R.color.colorPerfStatsSecondary))
-
-            enablePerfStats(true)
-        }
-
+        if (emulationSettings.perfStats) enablePerfStats(true)
         enableThermalIndicator(emulationSettings.perfStats)
-
         enableDynamicResolution(emulationSettings.enableDynamicResolution)
-
+        
         window.setSustainedPerformanceMode(emulationSettings.enableSustainedPerf)
-
         force60HzRefreshRate(!emulationSettings.maxRefreshRate)
         getSystemService<DisplayManager>()?.registerDisplayListener(this, null)
 
@@ -517,9 +509,7 @@ class EmulationActivity : AppCompatActivity(), SurfaceHolder.Callback, View.OnTo
                 }
                 R.id.menu_settings -> {
                     startActivity(Intent(this@EmulationActivity, SettingsActivity::class.java).apply {
-                        val args = Bundle()
-                        args.putSerializable(AppItemTag, item)
-                        if (!emulationSettings.isGlobal && emulationSettings.useCustomSettings) putExtras(args)
+                        if (!emulationSettings.isGlobal && emulationSettings.useCustomSettings) putExtra("AppItemTag", item)
                     })
                     true
                 }
