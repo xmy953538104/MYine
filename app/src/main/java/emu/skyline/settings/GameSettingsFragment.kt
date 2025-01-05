@@ -14,6 +14,7 @@ import emu.skyline.R
 import emu.skyline.data.AppItem
 import emu.skyline.data.AppItemTag
 import emu.skyline.preference.GpuDriverPreference
+import emu.skyline.preference.SeekBarPreference
 import emu.skyline.utils.GpuDriverHelper
 import emu.skyline.utils.WindowInsetsHelper
 import emu.skyline.utils.serializable
@@ -63,11 +64,12 @@ class GameSettingsFragment : PreferenceFragmentCompat() {
         if (BuildConfig.BUILD_TYPE != "release")
             findPreference<Preference>("validation_layer")?.isVisible = true
 
-        if (!GpuDriverHelper.supportsForceMaxGpuClocks()) {
-            val forceMaxGpuClocksPref = findPreference<TwoStatePreference>("force_max_gpu_clocks")!!
-            forceMaxGpuClocksPref.isSelectable = false
-            forceMaxGpuClocksPref.isChecked = false
-            forceMaxGpuClocksPref.summary = context!!.getString(R.string.force_max_gpu_clocks_desc_unsupported)
+            findPreference<GpuDriverPreference>("gpu_driver")?.item = item
+
+            findPreference<SeekBarPreference>("executor_slot_count_scale")?.setMaxValue(Runtime.getRuntime().availableProcessors().toInt())
+
+            findPreference<SwitchPreferenceCompat>("enable_speed_limit")?.isChecked?.let {
+            disablePreference("speed_limit", !it, null)
         }
 
         findPreference<GpuDriverPreference>("gpu_driver")?.item = item

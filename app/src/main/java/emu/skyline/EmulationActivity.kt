@@ -485,7 +485,11 @@ class EmulationActivity : AppCompatActivity(), SurfaceHolder.Callback, View.OnTo
                     true
                 }
                 R.id.menu_settings -> {
-                    startActivity(Intent(this@EmulationActivity, SettingsActivity::class.java))
+                    startActivity(Intent(this@EmulationActivity, SettingsActivity::class.java).apply {
+                        val args = Bundle()
+                        args.putSerializable(AppItemTag, item)
+                        if (!emulationSettings.isGlobal && emulationSettings.useCustomSettings) putExtras(args)
+                    })
                     true
                 }
                 R.id.menu_exit -> {
