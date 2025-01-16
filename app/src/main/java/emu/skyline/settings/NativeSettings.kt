@@ -37,6 +37,7 @@ data class NativeSettings(
     var useDirectMemoryImport : Boolean,
     var forceMaxGpuClocks : Boolean,
     var freeGuestTextureMemory : Boolean,
+    var useAsyncShaders : Boolean,
     var disableShaderCache : Boolean,
     var enableSampleShading : Boolean,
 
@@ -66,6 +67,7 @@ data class NativeSettings(
         pref.useDirectMemoryImport,
         pref.forceMaxGpuClocks,
         pref.freeGuestTextureMemory,
+        pref.useAsyncShaders,
         pref.disableShaderCache,
         pref.enableSampleShading,
         pref.enableFastGpuReadbackHack,
