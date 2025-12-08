@@ -66,10 +66,6 @@ class GameSettingsFragment : PreferenceFragmentCompat() {
 
             findPreference<GpuDriverPreference>("gpu_driver")?.item = item
 
-            findPreference<SwitchPreferenceCompat>("enable_speed_limit")?.isChecked?.let {
-            disablePreference("speed_limit", !it, null)
-        }
-
         // Hide settings that don't support per-game configuration
         var prefToRemove = findPreference<Preference>("profile_picture_value")
         prefToRemove?.parent?.removePreference(prefToRemove)
