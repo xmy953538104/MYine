@@ -30,6 +30,8 @@ namespace skyline {
             Update();
         }
 
+        bool useAsyncShaders{false};
+
         void Update() override {
             isDocked = ktSettings.GetBool("isDocked");
             usernameValue = std::move(ktSettings.GetString("usernameValue"));
