@@ -244,8 +244,23 @@ namespace skyline::gpu {
 
             Fps = static_cast<jint>(std::round(static_cast<float>(constant::NsInSecond) / static_cast<float>(averageFrametimeNs)));
 
-            TRACE_EVENT_INSTANT("gpu", "Present", presentationTrack, "FrameTimeNs", timestamp - frameTimestamp, "Fps", Fps);
-
+            TRACE_EVENT_INSTANT("gpu", "Present", presentationTrack, "FrameTimeNs", timestamp - frameTimestamp, "Fps", Fps); 
+            
+                    // 强制锁 60 FPS：仅在 VSync = FIFO (On) 时生效
+        if (state.settings && *state.settings->vsyncMode == 2) {
+            static i64 lastFrameNs = 0;
+            i64 nowNs = getMonotonicNsNow();
+            if (lastFrameNs > 0) {
+                i64 deltaNs = nowNs - lastFrameNs;
+                i64 targetNs = 16666666;  // 60 FPS
+                i64 sleepNs = targetNs - deltaNs;
+                if (sleepNs > 0) {
+                    std::this_thread::sleep_for(std::chrono::nanoseconds(sleepNs));
+                }
+            }
+            lastFrameNs = nowNs;
+        }
+            
             frameTimestamp = timestamp;
         } else {
             frameTimestamp = timestamp;
